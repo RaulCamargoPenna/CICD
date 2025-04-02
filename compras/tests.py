@@ -14,7 +14,7 @@ from compras.views import comprar
 class SampleTestCase(TestCase):
     def test_example(self):
 
-        valor_produto = 12
+        valor_produto = 13
 
         resultado_esperado = True
 
