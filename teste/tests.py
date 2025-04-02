@@ -5,6 +5,6 @@ from teste.views import soma
 def teste_soma():
     resultado_esperado = 9
     
-    resultado = soma(5, 9)
+    resultado = soma(5, 4)
 
     assert resultado_esperado == resultado
