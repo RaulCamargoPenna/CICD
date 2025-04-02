@@ -12,13 +12,45 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
+          fetch-depth: 0 # Garante que o histórico completo seja buscado
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Garantir que a branch esteja atualizada
+        run: |
+          git fetch origin ${{ github.ref_name }} # Obtém a branch remota mais recente
+          git checkout ${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }} # Garante que o código está atualizado
 
       - name: Criar Pull Request automática
-        uses: peter-evans/create-pull-request@v4
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.TESTE_TOKEN }}
-          branch: ${{ github.ref_name }}
-          base: main
-          title: "PR automática: mudanças da branch ${{ github.ref_name }}"
-          body: "Esta PR foi criada automaticamente após novos commits na branch ${{ github.ref_name }}."
+          github-token: ${{ secrets.TESTE_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const base = "main";
+            const head = context.ref.replace("refs/heads/", "");
+
+            const { data: existingPRs } = await github.rest.pulls.list({
+              owner,
+              repo,
+              head: `${owner}:${head}`,
+              base
+            });
+
+            if (existingPRs.length === 0) {
+              await github.rest.pulls.create({
+                owner,
+                repo,
+                title: `PR automática: mudanças da branch ${head}`,
+                head,
+                base,
+                body: "Esta PR foi criada automaticamente após novos commits."
+              });
+              console.log(`Pull Request criada com sucesso para ${head} -> ${base}`);
+            } else {
+              console.log("Uma PR já existe para essa branch. Nenhuma nova PR foi criada.");
+            }
