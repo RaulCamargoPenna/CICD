@@ -1,30 +1,26 @@
 name: Criar PR Automática
 
 on:
-  push:
-    branches-ignore:
-      - main
+  workflow_run:
+    workflows: ["Django CI"]  # Aguarda o "django.yml"
+    types:
+      - completed  # Só roda quando o workflow "django.yml" for concluído
 
 jobs:
   create-pull-request:
-    needs: build
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Garante que só roda se o build passar
+
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Garante que o histórico completo seja buscado
+          fetch-depth: 0
 
       - name: Configurar Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Garantir que a branch esteja atualizada
-        run: |
-          git fetch origin ${{ github.ref_name }} # Obtém a branch remota mais recente
-          git checkout ${{ github.ref_name }}
-          git pull origin ${{ github.ref_name }} # Garante que o código está atualizado
 
       - name: Criar Pull Request automática
         uses: actions/github-script@v6
@@ -33,7 +29,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const base = "main";
-            const head = context.ref.replace("refs/heads/", "");
+            const head = "${{ github.event.workflow_run.head_branch }}";
 
             const { data: existingPRs } = await github.rest.pulls.list({
               owner,
