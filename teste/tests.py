@@ -5,7 +5,6 @@ from teste.views import soma
 def teste_soma():
     resultado_esperado = 8
     
-    
-    resultado = soma(4, 4)
-    ## COmo que pode estár atualizado
+    resultado = soma(5, 3)
+
     assert resultado_esperado == resultado
