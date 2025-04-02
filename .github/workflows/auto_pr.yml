@@ -2,14 +2,14 @@ name: Criar PR Automática
 
 on:
   workflow_run:
-    workflows: ["Django CI"]  # Aguarda o "django.yml"
+    workflows: ["Django CI"]
     types:
-      - completed  # Só roda quando o workflow "django.yml" for concluído
+      - completed
 
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Garante que só roda se o build passar
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout do código
