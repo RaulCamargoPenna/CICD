@@ -34,4 +34,5 @@ jobs:
           
       - name: Run Tests
         run: |
+          source venv/bin/activate
           pytest ./teste/tests.py --cov -v
