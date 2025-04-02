@@ -15,7 +15,7 @@ jobs:
       - name: Criar Pull Request automática
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TESTE_TOKEN }}
           branch: ${{ github.ref_name }}
           base: main
           title: "PR automática: mudanças da branch ${{ github.ref_name }}"
