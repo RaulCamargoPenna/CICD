@@ -3,8 +3,8 @@ from teste.views import soma
 # Create your tests here.
 
 def teste_soma():
-    resultado_esperado = 9
+    resultado_esperado = 8
     
-    resultado = soma(5, 4)
-    # fiz cagada
+    resultado = soma(4, 4)
+    # fiz cagada 2
     assert resultado_esperado == resultado
