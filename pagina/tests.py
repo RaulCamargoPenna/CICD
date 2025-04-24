@@ -10,7 +10,7 @@ class SampleTestCase(TestCase):
         
         token = 'token_teste'
         
-        filial_teste = 'sc'
+        filial_teste = 'SC'
         resultado_esperado = token
         
         Tokens_mercado_livre_correto.objects.create(
