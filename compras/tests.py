@@ -12,6 +12,7 @@ from compras.views import comprar
 #     assert resultado == resultado_esperado
 
 class SampleTestCase(TestCase):
+    
     def test_example(self):
 
         valor_produto = 9
