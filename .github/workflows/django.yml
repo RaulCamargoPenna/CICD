@@ -14,6 +14,15 @@ jobs:
       - name: Clonar o repositório
         uses: actions/checkout@v3
 
+      - name: Exportar variáveis de ambiente
+        run: |
+          echo "NAME_DB=${{ secrets.NAME_DB }}" >> $GITHUB_ENV
+          echo "USER_DB=${{ secrets.USER_DB }}" >> $GITHUB_ENV
+          echo "PASSWORD_DB=${{ secrets.PASSWORD_DB }}" >> $GITHUB_ENV
+          echo "LOCAL_HOST=${{ secrets.LOCAL_HOST }}" >> $GITHUB_ENV
+          echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
+
+
       - name: Configurar Python
         uses: actions/setup-python@v4
         with:
